@@ -1,0 +1,49 @@
+create table if not exists charge_process_CHANGE_table
+(
+	id						integer primary key autoincrement,
+	guid_number				varchar(100),
+	record_time				datetime,
+	voltage_a				varchar(10),
+	voltage_b				varchar(10),
+	voltage_c				varchar(10),
+	current_a				varchar(10),
+	current_b				varchar(10),
+	current_c				varchar(10),
+	total_active_power		varchar(10),
+	total_reactive_power	varchar(10),
+	total_active_energy		varchar(10),
+	total_reactive_energy	varchar(10),
+	total_power_factor		varchar(10),
+	zero_line_current		varchar(10),
+	voltage_unbalance_rate	varchar(10),
+	current_unbalance_rate	varchar(10),
+	voltage_dc				varchar(10),
+	current_dc				varchar(10),
+	stage_status			integer
+);
+create table if not exists  charge_energy_CHANGE_table
+(
+	id						integer primary key autoincrement,
+	UUIDOwn					text, 
+	NowTime					datetime, 
+	NowEnergy				integer, 
+	ChargeType				integer,
+	TimeRank				integer,
+	RealTime                                 datetime
+);
+
+create table if not exists charge_policy_CHANGE_table
+(
+	id						integer primary key  autoincrement,
+	guid					text,
+	policy_type				integer default 0,
+	policy_index			integer default 0,
+	start_hour				integer default 0,
+	start_minute			integer default 0,
+	start_second			integer default 0,
+	stop_hour				integer default 0,
+	stop_minute				integer default 0,
+	stop_second				integer default 0,
+	cost					integer default 0,
+	energy					float default 0.0
+);

@@ -1,0 +1,2 @@
+0 4 * * * timer_upload.sh &
+50 3 * * * timer_delete.sh &

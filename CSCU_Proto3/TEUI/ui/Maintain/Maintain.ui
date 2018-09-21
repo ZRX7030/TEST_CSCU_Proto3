@@ -1,0 +1,861 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Maintain</class>
+ <widget class="QWidget" name="Maintain">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>480</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="layoutDirection">
+   <enum>Qt::LeftToRight</enum>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">border-image: \*url();</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout_2">
+   <property name="sizeConstraint">
+    <enum>QLayout::SetMinAndMaxSize</enum>
+   </property>
+   <property name="margin">
+    <number>0</number>
+   </property>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="2,5">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetMinAndMaxSize</enum>
+     </property>
+     <item>
+      <widget class="QToolBox" name="toolBox">
+       <property name="font">
+        <font>
+         <family>Adobe Arabic</family>
+         <pointsize>23</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="autoFillBackground">
+        <bool>false</bool>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: 23pt &quot;Adobe Arabic&quot;;
+</string>
+       </property>
+       <property name="currentIndex">
+        <number>4</number>
+       </property>
+       <property name="tabSpacing">
+        <number>6</number>
+       </property>
+       <widget class="QWidget" name="paramSetBox">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>-119</y>
+          <width>254</width>
+          <height>314</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Adobe Arabic</family>
+          <pointsize>23</pointsize>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(25,125,178);</string>
+        </property>
+        <attribute name="label">
+         <string>参数设置</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_8">
+         <property name="sizeConstraint">
+          <enum>QLayout::SetMinAndMaxSize</enum>
+         </property>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout" stretch="1,1,1,1,1,1,1">
+           <property name="spacing">
+            <number>4</number>
+           </property>
+           <property name="sizeConstraint">
+            <enum>QLayout::SetMinAndMaxSize</enum>
+           </property>
+           <item>
+            <widget class="QPushButton" name="cscuSetButton">
+             <property name="palette">
+              <palette>
+               <active>
+                <colorrole role="WindowText">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>0</red>
+                   <green>0</green>
+                   <blue>0</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Button">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>0</red>
+                   <green>170</green>
+                   <blue>255</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Text">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>0</red>
+                   <green>0</green>
+                   <blue>0</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="ButtonText">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>0</red>
+                   <green>0</green>
+                   <blue>0</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Base">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>0</red>
+                   <green>170</green>
+                   <blue>255</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Window">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>0</red>
+                   <green>170</green>
+                   <blue>255</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+               </active>
+               <inactive>
+                <colorrole role="WindowText">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>0</red>
+                   <green>0</green>
+                   <blue>0</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Button">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>0</red>
+                   <green>170</green>
+                   <blue>255</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Text">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>0</red>
+                   <green>0</green>
+                   <blue>0</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="ButtonText">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>0</red>
+                   <green>0</green>
+                   <blue>0</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Base">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>0</red>
+                   <green>170</green>
+                   <blue>255</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Window">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>0</red>
+                   <green>170</green>
+                   <blue>255</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+               </inactive>
+               <disabled>
+                <colorrole role="WindowText">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>0</red>
+                   <green>0</green>
+                   <blue>0</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Button">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>0</red>
+                   <green>170</green>
+                   <blue>255</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Text">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>0</red>
+                   <green>0</green>
+                   <blue>0</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="ButtonText">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>0</red>
+                   <green>0</green>
+                   <blue>0</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Base">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>0</red>
+                   <green>170</green>
+                   <blue>255</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Window">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>0</red>
+                   <green>170</green>
+                   <blue>255</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+               </disabled>
+              </palette>
+             </property>
+             <property name="font">
+              <font>
+               <family>Adobe Arabic</family>
+               <pointsize>20</pointsize>
+               <weight>50</weight>
+               <italic>false</italic>
+               <bold>false</bold>
+              </font>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton { background-color: rgb(0, 170, 255); color: rgb(0, 0, 0); } 
+QPushButton:hover { background-color: rgb(0,0,127); color:rgb(255, 255, 255);} 
+QPushButton {font: 20pt ; } </string>
+             </property>
+             <property name="text">
+              <string>集控设置</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="ActriphaseSetButton">
+             <property name="enabled">
+              <bool>true</bool>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton { background-color: rgb(0, 170, 255); color: rgb(0, 0, 0); } 
+QPushButton:hover { background-color: rgb(0,0,127); color:rgb(255, 255, 255);} 
+QPushButton {font: 20pt ; } </string>
+             </property>
+             <property name="text">
+              <string>交流三相相别设置</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="DCChargerSetButton">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton { background-color: rgb(0, 170, 255); color: rgb(0, 0, 0); } 
+QPushButton:hover { background-color: rgb(0,0,127); color:rgb(255, 255, 255);} 
+QPushButton {font: 20pt ; } </string>
+             </property>
+             <property name="text">
+              <string> 直流机设置</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="TimeSetButton">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton { background-color: rgb(0, 170, 255); color: rgb(0, 0, 0); } 
+QPushButton:hover { background-color: rgb(0,0,127); color:rgb(255, 255, 255);} 
+QPushButton {font: 20pt ; } </string>
+             </property>
+             <property name="text">
+              <string>时间设置</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="LogoSetButton">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton { background-color: rgb(0, 170, 255); color: rgb(0, 0, 0); } 
+QPushButton:hover { background-color: rgb(0,0,127); color:rgb(255, 255, 255);} 
+QPushButton {font: 20pt ; } </string>
+             </property>
+             <property name="text">
+              <string>标题设置</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="PasswordSetButton">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton { background-color: rgb(0, 170, 255); color: rgb(0, 0, 0); } 
+QPushButton:hover { background-color: rgb(0,0,127); color:rgb(255, 255, 255);} 
+QPushButton {font: 20pt ; } </string>
+             </property>
+             <property name="text">
+              <string>修改密码</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_4">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="chargesetBox">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>213</width>
+          <height>363</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(25,125,178);</string>
+        </property>
+        <attribute name="label">
+         <string>充电设置</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_10">
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_9" stretch="1,1,1,1,1,1,1,1">
+           <property name="spacing">
+            <number>4</number>
+           </property>
+           <property name="sizeConstraint">
+            <enum>QLayout::SetMinAndMaxSize</enum>
+           </property>
+           <item>
+            <widget class="QPushButton" name="SpecialFeatureButton">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton { background-color: rgb(0, 170, 255); color: rgb(0, 0, 0); } 
+QPushButton:hover { background-color: rgb(0,0,127); color:rgb(255, 255, 255);} 
+QPushButton {font: 20pt ; } </string>
+             </property>
+             <property name="text">
+              <string>特殊功能设置 </string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="LoadConstraintSetButton">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton { background-color: rgb(0, 170, 255); color: rgb(0, 0, 0); } 
+QPushButton:hover { background-color: rgb(0,0,127); color:rgb(255, 255, 255);} 
+QPushButton {font: 20pt ; } </string>
+             </property>
+             <property name="text">
+              <string>负荷约束设置</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="PeakChargingFeatureSetButton">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton { background-color: rgb(0, 170, 255); color: rgb(0, 0, 0); } 
+QPushButton:hover { background-color: rgb(0,0,127); color:rgb(255, 255, 255);} 
+QPushButton {font: 20pt ; } </string>
+             </property>
+             <property name="text">
+              <string>错峰充电设置 </string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="CoupleGunSetButton">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton { background-color: rgb(0, 170, 255); color: rgb(0, 0, 0); } 
+QPushButton:hover { background-color: rgb(0,0,127); color:rgb(255, 255, 255);} 
+QPushButton {font: 20pt ; } </string>
+             </property>
+             <property name="text">
+              <string>多枪设置 </string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="QRcodeCreate">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton { background-color: rgb(0, 170, 255); color: rgb(0, 0, 0); } 
+QPushButton:hover { background-color: rgb(0,0,127); color:rgb(255, 255, 255);} 
+QPushButton {font: 20pt ; } </string>
+             </property>
+             <property name="text">
+              <string>二维码生成</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="StartTypeSelect">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton { background-color: rgb(0, 170, 255); color: rgb(0, 0, 0); } 
+QPushButton:hover { background-color: rgb(0,0,127); color:rgb(255, 255, 255);} 
+QPushButton {font: 20pt ; } </string>
+             </property>
+             <property name="text">
+              <string>充电模式选择</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="ChargePassword">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton { background-color: rgb(0, 170, 255); color: rgb(0, 0, 0); } 
+QPushButton:hover { background-color: rgb(0,0,127); color:rgb(255, 255, 255);} 
+QPushButton {font: 20pt ; } </string>
+             </property>
+             <property name="text">
+              <string>充电密码</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_5">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>18</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="RealtimeInfo">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>213</width>
+          <height>363</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(25,125,178);</string>
+        </property>
+        <attribute name="label">
+         <string>实时信息</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_7">
+         <property name="sizeConstraint">
+          <enum>QLayout::SetMinAndMaxSize</enum>
+         </property>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,1,1,1,1,1,1,1">
+           <property name="spacing">
+            <number>4</number>
+           </property>
+           <property name="sizeConstraint">
+            <enum>QLayout::SetMinAndMaxSize</enum>
+           </property>
+           <item>
+            <widget class="QPushButton" name="TerminalInformationButton">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton { background-color: rgb(0, 170, 255); color: rgb(0, 0, 0); } 
+QPushButton:hover { background-color: rgb(0,0,127); color:rgb(255, 255, 255);} 
+QPushButton {font: 20pt ; } </string>
+             </property>
+             <property name="text">
+              <string>终端信息</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="BMSInformationButton">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton { background-color: rgb(0, 170, 255); color: rgb(0, 0, 0); } 
+QPushButton:hover { background-color: rgb(0,0,127); color:rgb(255, 255, 255);} 
+QPushButton {font: 20pt ; } </string>
+             </property>
+             <property name="text">
+              <string>BMS信息</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="UserLineSideInformationButton">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton { background-color: rgb(0, 170, 255); color: rgb(0, 0, 0); } 
+QPushButton:hover { background-color: rgb(0,0,127); color:rgb(255, 255, 255);} 
+QPushButton {font: 20pt ; } </string>
+             </property>
+             <property name="text">
+              <string>进线侧信息</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="DCChargerDataButton">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton { background-color: rgb(0, 170, 255); color: rgb(0, 0, 0); } 
+QPushButton:hover { background-color: rgb(0,0,127); color:rgb(255, 255, 255);} 
+QPushButton {font: 20pt ; } </string>
+             </property>
+             <property name="text">
+              <string>直流机信息</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="ModuleInformationButton">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton { background-color: rgb(0, 170, 255); color: rgb(0, 0, 0); } 
+QPushButton:hover { background-color: rgb(0,0,127); color:rgb(255, 255, 255);} 
+QPushButton {font: 20pt ; } </string>
+             </property>
+             <property name="text">
+              <string>模块信息</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="SubStationEnInformationButton">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton { background-color: rgb(0, 170, 255); color: rgb(0, 0, 0); } 
+QPushButton:hover { background-color: rgb(0,0,127); color:rgb(255, 255, 255);} 
+QPushButton {font: 20pt ; } </string>
+             </property>
+             <property name="text">
+              <string>子站环境信息</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="RealTimeFaultBtn">
+             <property name="styleSheet">
+              <string notr="true">QPushButton { background-color: rgb(0, 170, 255); color: rgb(0, 0, 0); } 
+QPushButton:hover { background-color: rgb(0,0,127); color:rgb(255, 255, 255);} 
+QPushButton {font: 20pt ; } </string>
+             </property>
+             <property name="text">
+              <string>实时故障信息</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="showInfoBox">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>226</width>
+          <height>208</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(25,125,178);</string>
+        </property>
+        <attribute name="label">
+         <string>历史信息</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_5">
+         <property name="sizeConstraint">
+          <enum>QLayout::SetMinAndMaxSize</enum>
+         </property>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_3" stretch="1,1,1,1">
+           <property name="spacing">
+            <number>4</number>
+           </property>
+           <property name="sizeConstraint">
+            <enum>QLayout::SetMinAndMaxSize</enum>
+           </property>
+           <item>
+            <widget class="QPushButton" name="FailureInformationButton">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton { background-color: rgb(0, 170, 255); color: rgb(0, 0, 0); } 
+QPushButton:hover { background-color: rgb(0,0,127); color:rgb(255, 255, 255);} 
+QPushButton {font: 20pt ; } </string>
+             </property>
+             <property name="text">
+              <string>设备故障信息</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="operateRecordButton">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton { background-color: rgb(0, 170, 255); color: rgb(0, 0, 0); } 
+QPushButton:hover { background-color: rgb(0,0,127); color:rgb(255, 255, 255);} 
+QPushButton {font: 20pt ; } </string>
+             </property>
+             <property name="text">
+              <string>操作记录</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="chargeRecordButton">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton { background-color: rgb(0, 170, 255); color: rgb(0, 0, 0); } 
+QPushButton:hover { background-color: rgb(0,0,127); color:rgb(255, 255, 255);} 
+QPushButton {font: 20pt ; }  </string>
+             </property>
+             <property name="text">
+              <string>充电记录</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>67</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="widget">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>226</width>
+          <height>208</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(25,125,178);</string>
+        </property>
+        <attribute name="label">
+         <string>版本信息</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_6">
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_4">
+           <property name="spacing">
+            <number>4</number>
+           </property>
+           <property name="sizeConstraint">
+            <enum>QLayout::SetMinAndMaxSize</enum>
+           </property>
+           <item>
+            <widget class="QPushButton" name="versionButton">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton { background-color: rgb(0, 170, 255); color: rgb(0, 0, 0); } 
+QPushButton:hover { background-color: rgb(0,0,127); color:rgb(255, 255, 255);} 
+QPushButton {font: 20pt ; } </string>
+             </property>
+             <property name="text">
+              <string>版本信息</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="languageSelectButton">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton { background-color: rgb(0, 170, 255); color: rgb(0, 0, 0); } 
+QPushButton:hover { background-color: rgb(0,0,127); color:rgb(255, 255, 255);} 
+QPushButton {font: 20pt ; } </string>
+             </property>
+             <property name="text">
+              <string>语言选择</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_3">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>113</width>
+               <height>136</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </item>
+     <item>
+      <spacer name="maintainSpacerFill">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>412</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

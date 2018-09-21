@@ -1,0 +1,94 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number: 2 (0x2)
+    Signature Algorithm: sha256WithRSAEncryption
+        Issuer: C=CN, ST=ShangDong, L=QingDao, O=teld, OU=teld, CN=teld CA/name=teldvpn/emailAddress=teld@teld.cn
+        Validity
+            Not Before: Oct 24 02:57:03 2016 GMT
+            Not After : Oct 22 02:57:03 2026 GMT
+        Subject: C=CN, ST=ShangDong, L=QingDao, O=teld, OU=teld, CN=client/name=teldvpn/emailAddress=teld@teld.cn
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (2048 bit)
+                Modulus:
+                    00:e0:0d:b9:98:59:f2:a3:ff:a2:1c:59:31:05:b7:
+                    c0:9a:41:42:50:23:03:f2:4e:bf:71:1f:7a:28:27:
+                    64:4c:9c:ca:9d:95:66:64:ef:47:d9:8e:41:d5:df:
+                    37:8b:34:58:07:82:13:64:58:bc:9b:31:dc:32:6a:
+                    79:65:ad:4c:49:bd:23:3c:74:ac:d5:91:2a:48:9b:
+                    3d:50:71:66:86:0f:f6:df:33:47:72:96:79:47:f2:
+                    ac:27:0f:80:9c:d5:fb:1f:cd:3b:6b:53:3c:22:31:
+                    5b:ac:37:66:f1:b9:3c:8f:f5:16:6e:3a:9f:3e:0c:
+                    f6:db:43:67:41:be:92:f0:16:48:8e:d1:bc:60:f5:
+                    7d:b6:7e:48:31:7c:ae:92:9f:77:a5:ce:e7:13:e5:
+                    0e:93:90:cf:be:6e:67:b3:0e:71:e7:1e:cd:92:1a:
+                    c2:61:aa:ab:2d:91:5f:96:dc:c0:87:93:c8:3e:13:
+                    ab:ea:37:67:4e:01:6f:fc:d7:91:41:f5:76:52:4f:
+                    61:72:52:0a:18:2e:f9:cb:40:7a:c1:25:35:7b:0a:
+                    04:ee:07:ca:08:b9:fe:82:d7:c8:10:23:ac:5e:8c:
+                    49:cd:4c:6f:8f:b9:0a:ac:b7:ff:22:84:f5:a0:e7:
+                    75:0a:45:71:e7:10:09:44:9f:e5:62:64:15:62:28:
+                    25:3b
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Basic Constraints: 
+                CA:FALSE
+            Netscape Comment: 
+                Easy-RSA Generated Certificate
+            X509v3 Subject Key Identifier: 
+                22:03:E0:87:15:E0:D7:6E:04:60:CA:D1:31:1E:C8:C4:44:8B:FF:F3
+            X509v3 Authority Key Identifier: 
+                keyid:FF:84:4E:67:E8:4E:88:16:30:E7:61:0F:DA:1C:6E:E2:33:53:83:E1
+                DirName:/C=CN/ST=ShangDong/L=QingDao/O=teld/OU=teld/CN=teld CA/name=teldvpn/emailAddress=teld@teld.cn
+                serial:C3:DF:44:23:F1:F5:E1:37
+
+            X509v3 Extended Key Usage: 
+                TLS Web Client Authentication
+            X509v3 Key Usage: 
+                Digital Signature
+    Signature Algorithm: sha256WithRSAEncryption
+         51:be:4a:2d:19:a0:7d:a7:ab:a2:4a:7d:96:52:c3:7e:22:68:
+         90:c0:1a:2e:54:19:fb:71:23:a8:81:51:77:8c:ba:00:65:41:
+         82:0b:ab:ee:7e:21:ea:af:d2:50:af:d8:18:ef:33:e3:6f:1b:
+         dd:27:de:1d:9d:81:a2:13:f6:af:9f:4c:d6:36:93:90:5c:e0:
+         86:c9:a8:4c:d6:a6:45:6e:ce:62:38:d9:d9:6a:a7:bf:75:55:
+         2d:24:0d:fa:4e:41:3c:63:15:00:43:51:90:a9:a0:14:bc:55:
+         eb:9e:b4:a0:09:82:97:c3:81:94:5e:44:c8:f6:ee:30:d6:fe:
+         48:cd:0f:5e:2b:9b:4f:d6:e8:fe:14:7b:9c:13:78:ec:49:09:
+         3c:87:ea:a6:d7:41:59:c4:09:20:e9:53:5a:b3:c8:e8:c3:58:
+         c1:14:20:97:90:9e:9a:27:e4:1a:0f:0c:88:cb:1e:00:6e:da:
+         8e:b1:97:0e:cc:78:b8:02:c3:6e:48:d8:b1:19:ae:f0:80:3e:
+         d6:48:d8:35:ed:8b:7a:e2:71:94:9b:bb:e5:b9:af:2c:e8:49:
+         45:17:0f:d6:78:e8:5d:c7:79:dd:92:13:00:4e:49:fa:ee:09:
+         21:75:59:6f:91:39:cf:66:e8:ce:30:f1:be:17:38:be:fc:f2:
+         68:74:4b:a6
+-----BEGIN CERTIFICATE-----
+MIIE6zCCA9OgAwIBAgIBAjANBgkqhkiG9w0BAQsFADCBkjELMAkGA1UEBhMCQ04x
+EjAQBgNVBAgTCVNoYW5nRG9uZzEQMA4GA1UEBxMHUWluZ0RhbzENMAsGA1UEChME
+dGVsZDENMAsGA1UECxMEdGVsZDEQMA4GA1UEAxMHdGVsZCBDQTEQMA4GA1UEKRMH
+dGVsZHZwbjEbMBkGCSqGSIb3DQEJARYMdGVsZEB0ZWxkLmNuMB4XDTE2MTAyNDAy
+NTcwM1oXDTI2MTAyMjAyNTcwM1owgZExCzAJBgNVBAYTAkNOMRIwEAYDVQQIEwlT
+aGFuZ0RvbmcxEDAOBgNVBAcTB1FpbmdEYW8xDTALBgNVBAoTBHRlbGQxDTALBgNV
+BAsTBHRlbGQxDzANBgNVBAMTBmNsaWVudDEQMA4GA1UEKRMHdGVsZHZwbjEbMBkG
+CSqGSIb3DQEJARYMdGVsZEB0ZWxkLmNuMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A
+MIIBCgKCAQEA4A25mFnyo/+iHFkxBbfAmkFCUCMD8k6/cR96KCdkTJzKnZVmZO9H
+2Y5B1d83izRYB4ITZFi8mzHcMmp5Za1MSb0jPHSs1ZEqSJs9UHFmhg/23zNHcpZ5
+R/KsJw+AnNX7H807a1M8IjFbrDdm8bk8j/UWbjqfPgz220NnQb6S8BZIjtG8YPV9
+tn5IMXyukp93pc7nE+UOk5DPvm5nsw5x5x7NkhrCYaqrLZFfltzAh5PIPhOr6jdn
+TgFv/NeRQfV2Uk9hclIKGC75y0B6wSU1ewoE7gfKCLn+gtfIECOsXoxJzUxvj7kK
+rLf/IoT1oOd1CkVx5xAJRJ/lYmQVYiglOwIDAQABo4IBSTCCAUUwCQYDVR0TBAIw
+ADAtBglghkgBhvhCAQ0EIBYeRWFzeS1SU0EgR2VuZXJhdGVkIENlcnRpZmljYXRl
+MB0GA1UdDgQWBBQiA+CHFeDXbgRgytExHsjERIv/8zCBxwYDVR0jBIG/MIG8gBT/
+hE5n6E6IFjDnYQ/aHG7iM1OD4aGBmKSBlTCBkjELMAkGA1UEBhMCQ04xEjAQBgNV
+BAgTCVNoYW5nRG9uZzEQMA4GA1UEBxMHUWluZ0RhbzENMAsGA1UEChMEdGVsZDEN
+MAsGA1UECxMEdGVsZDEQMA4GA1UEAxMHdGVsZCBDQTEQMA4GA1UEKRMHdGVsZHZw
+bjEbMBkGCSqGSIb3DQEJARYMdGVsZEB0ZWxkLmNuggkAw99EI/H14TcwEwYDVR0l
+BAwwCgYIKwYBBQUHAwIwCwYDVR0PBAQDAgeAMA0GCSqGSIb3DQEBCwUAA4IBAQBR
+vkotGaB9p6uiSn2WUsN+ImiQwBouVBn7cSOogVF3jLoAZUGCC6vufiHqr9JQr9gY
+7zPjbxvdJ94dnYGiE/avn0zWNpOQXOCGyahM1qZFbs5iONnZaqe/dVUtJA36TkE8
+YxUAQ1GQqaAUvFXrnrSgCYKXw4GUXkTI9u4w1v5IzQ9eK5tP1uj+FHucE3jsSQk8
+h+qm10FZxAkg6VNas8jow1jBFCCXkJ6aJ+QaDwyIyx4AbtqOsZcOzHi4AsNuSNix
+Ga7wgD7WSNg17Yt64nGUm7vlua8s6ElFFw/WeOhdx3ndkhMATkn67gkhdVlvkTnP
+ZujOMPG+Fzi+/PJodEum
+-----END CERTIFICATE-----

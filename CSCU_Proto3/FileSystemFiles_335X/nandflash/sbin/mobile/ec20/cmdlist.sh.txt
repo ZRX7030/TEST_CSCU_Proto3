@@ -1,0 +1,102 @@
+#!/bin/sh
+exit
+
+# Set UART parameters (baudrate)
+comkit -d /dev/ttyO1 -b 115200 -m pc > /dev/null
+
+# 默认就在AT命令模式
+
+# 空指令，用于同步波特率
+AT
+# --
+#    OK
+
+# 查看版本号
+ATI
+# --
+#    Quectel_Ltd
+#    Q
+#    uectel_MC20
+#    Rev
+#    ision: MC20CAR01
+#    A06
+#    OK
+
+
+# 关闭回显
+ATE0
+# --
+#    OK
+
+# 显示详细错误信息
+AT+CMEE=2
+# --
+#    OK
+
+# 显示模块名称
+AT+GMM
+# --
+#    Quectel_MC20
+#    OK
+
+# ------------------------------------------------------------------------------
+# GPS
+
+# 查询GPS是否开启
+AT+QGPS?
+# --
+#    +QGPS: 1
+#    OK
+
+# 开启GPS
+AT+QGPS=1
+# --
+#    OK
+#    或 +CME ERROR: Session is ongoing
+
+# Enable nmeasrc 
+# After enabled, original NMEA sentences can be acquired by AT+QGPSGNMEA.
+# Meanwhile, sentences are output through NMEA port as before.
+# <nmeasrc>  
+#   0 Disable 
+#   1 Enable (default)
+#AT+QGPSCFG="nmeasrc"[,<nmeasrc>] 
+AT+QGPSCFG="nmeasrc"
+# --
+#    +QGPSCFG: "nmeasrc",1
+#    OK
+
+AT+QGPSCFG="nmeasrc",1
+# --
+#    OK
+
+# Configure output type of GPS NMEA sentences by ORed. 
+# The default value is 31. 
+# <gpsnmeatype>    
+#   1   GGA 
+#   2   RMC 
+#   4   GSV 
+#   8   GSA 
+#   16  VTG 
+#AT+QGPSCFG="gpsnmeatype"[,<gpsnmeatype>] 
+AT+QGPSCFG="gpsnmeatype"
+# --
+#    +QGPSCFG: "gpsnmeatype",2
+#    OK
+
+AT+QGPSCFG="gpsnmeatype",2
+# --
+#    OK
+
+# obtain NMEA sentences 
+AT+QGPSGNMEA="RMC"
+# --
+#    +QGPSGNMEA: $GPRMC,,V,,,,,,,,,,N*53
+#    OK
+
+# Terminate GNSS Session  
+AT+QGPSEND
+# --
+#    OK
+
+# ------------------------------------------------------------------------------

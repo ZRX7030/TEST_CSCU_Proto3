@@ -1,0 +1,19 @@
+TELD_LIBPATH=
+TELD_INCLUDEPATH=
+HWENV=IM_9280
+#HWENV=IM_335X
+
+DESTDIR = $$OUT_PWD/bin
+MOC_DIR = $$OUT_PWD/build_$$TARGET
+RCC_DIR = $$OUT_PWD/build_$$TARGET
+UI_DIR = $$OUT_PWD/build_$$TARGET
+OBJECTS_DIR = $$OUT_PWD/build_$$TARGET
+#QMAKE_CXXFLAGS += -g
+
+equals(HWENV, "IM_9280"){
+TELD_LIBPATH=$$PWD/FileSystemFiles_9280/nandflash/lib
+TELD_INCLUDEPATH=FileSystemFiles_9280
+}else:equals(HWENV, "IM_335X"){
+    TELD_LIBPATH=$$PWD/FileSystemFiles_335X/nandflash/lib
+TELD_INCLUDEPATH=FileSystemFiles_335X
+}

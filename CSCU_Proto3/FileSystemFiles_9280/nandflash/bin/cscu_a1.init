@@ -1,0 +1,43 @@
+#!/bin/sh
+
+count=0
+result=0
+selfnum=0
+cur_time=
+
+exec_dir=/mnt/nandflash
+exec_bin=${exec_dir}/bin/CSCU_A1
+
+export set PATH=$QPEDIR/bin:/mnt/nandflash/bin:$PATH
+export set LD_LIBRARY_PATH=$QTDIR/lib:$QPEDIR/plugins/imageformats:/forlinx/qt/lib:/mnt/nandflash/lib:$LD_LIBRARY_PATH
+
+while true
+do
+	cur_time=$(date "+%Y-%m-%d %H:%M:%S")
+
+	if [ ! -f "$exec_bin" ]; then
+		echo "${cur_time} ${exec_bin} not found!" >> ${exec_dir}/restart.tmp
+		break;
+	fi
+
+	let "count+=1"
+	output="["${count}"] "${cur_time}
+	echo $output >> /mnt/nandflash/restart.tmp
+
+	chmod +x $exec_bin > /dev/null 2>&1
+	result=$(ps | grep "CSCU_A1" | wc -l)
+	ps | grep "cscu_a1"
+	selfnum=$(ps | grep "cscu_a1" | wc -l)
+	echo "reslt is $result "
+	echo "selfnum is $selfnum "
+	if [ $result -lt 2 ];then
+		$exec_bin
+	fi
+	if [ $selfnum -gt 3 ]; then
+	echo "exit! already run another script!"
+
+	break;
+	fi
+	sleep 1
+done
+	

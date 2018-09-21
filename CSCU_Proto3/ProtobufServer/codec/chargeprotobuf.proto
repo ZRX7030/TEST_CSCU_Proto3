@@ -1,0 +1,1218 @@
+syntax = "proto3";
+package charge.protobuf;
+//20180725 Ctrl--FES V1.9.3
+//20180515 Fes-CM V1.4
+//心跳（0x00）
+message HeartbeatReq
+{
+	DateTime CurrentTime =1;		  //发送方当前时间
+}
+
+//心跳（0x80）
+message HeartbeatAns
+{
+	DateTime CurrentTime =1;		  //接收方当前时间
+}
+
+//通用响应CommAns，多个消息类型可以用同一份消息体，具体参见协议文档
+message CommAns
+{
+    BoolEnum Confirm = 1; //通知确认
+}
+
+//上线申请.请求（0x02）
+message LoginReq
+{
+	string Key =1;		            //集控器秘钥
+	DateTime SendTime = 2;          //发送时间
+	string SerialNumber =3;         //设备序列号(预留)
+	string CtrlProtoVersion = 4;    //集控协议版本号
+	string CtrlVendor = 5;          //集控生产厂商
+	string CtrlSwVersion = 6;       //集控软件版本号
+	CtrlHardwareType CtrlHwType = 7;//集控硬件类型(集控/单桩)
+	string DataCenter =8;           //集控所属数据中心(前置填充)
+	int32  CtrlStatus =9;           //集控上线状态：1 没有历史订单，2有历史订单，3运维调试
+	int32  BillCount = 10;          //配合CtrlStatus使用，当CtrlStatus=2时，需要填写集控缓存的历史订单数，否则填0
+	string Reserved1 = 101;         //预留1
+	string Reserved2 = 102;         //预留2
+}
+
+//上线申请.响应（0x82）
+message LoginAns
+{
+	RegistrationStatus Status =1;       //注册结果
+	DateTime CurrentTime =2;		    //服务器当前时间
+	int32 Interval =3; 				    //心跳时间间隔（秒）
+}
+
+//离线通知.请求（0x04）
+message OfflineReq
+{
+	OfflineReason Reason =1;     //集控器离线原因
+	DateTime OfflineTime = 2;    //集控离线时间
+	string CtrlProtoVersion = 3; //集控协议版本号
+	string Reserved1 = 101;        //预留1
+	string Reserved2 = 102;        //预留2
+	
+}
+
+//离线通知.响应（0x84） 废弃 集控到前置不用该类型了，改用 通用响应（0xFE）
+message OfflineAns
+{
+    BoolEnum Confirm = 1; //通知确认
+}
+
+//平台侧启动充电指令.下发（0x11）
+message StartChargeCmdReq
+{
+	int32	CanIndex =	1;				        //充电终端在集控器下的索引
+	StartChargeType Type = 2;			        //充电类型
+	string BillCode	= 3;				        //订单电流水号
+	AccountInfo Account = 4;			        //账户信息(用于余额校验)
+	CruveType CType = 5;                        //充电计划曲线的类型
+	repeated ChargingStrategy Cruve = 6;		//充电功率计划曲线
+	int32 AllowedSecond = 7;			        //按时间充电时，最大允许充电时间，单位秒。
+	int32 AllowedkWh = 8;				        //按电量充电时，最大允许充电电量，单位kwh。
+	int32 AllowedRmb = 9;				        //按金额充电时，最大允许充电金额，单位分。
+	repeated AccountingStrategy Strategy = 10;	//计费策略(和账户信息匹配)
+	QueueSequence Sequence =11 ;                //终端排队信息(和充电类型为排队配合使用)
+	string Reserved1 = 101;   //预留1 表示用户的手机号，天津公司小票非标需求使用
+	string Reserved2 = 102;   //预留2
+	string Reserved3 = 103;   //预留3
+}
+
+//平台侧启动充电指令.响应（0x91）
+message StartChargeCmdAns
+{
+	int32	CanIndex = 1;		    //充电终端在集控器下的索引
+	string	BillCode = 2;			//订单流水号
+	BoolEnum	Result = 3;			//是否成功
+	FailReason	Reason = 4;		    //失败原因
+	DateTime SendTime = 5;      //发送时间
+	string Reserved1 = 101;   //预留1
+	string Reserved2 = 102;   //预留2
+}
+
+//平台侧停止充电指令（0x13）
+message StopChargeCmdReq
+{
+	int32 CanIndex = 1;			//充电终端在集控器下的索引
+	string BillCode = 2;		//订单流水号
+	ChargeRequestType StopType = 3;	//充电停止类型
+	ChargeDischarge ChargeType = 4;	//充放电类型
+	string Vin = 5;             //车架号
+	string Plate = 6;           //车牌号
+	CardInfo Card = 7;          //充电卡
+	string UserCode = 8;        //用户身份
+	string Reserved1 = 101;   //预留1
+	string Reserved2 = 102;   //预留2
+}
+
+//平台侧停止充电指令.响应（0x93）
+message StopChargeCmdAns
+{
+	int32	CanIndex = 1;		    //充电终端在集控器下的索引
+	string	BillCode = 2;			//充放电流水号
+	BoolEnum	Result = 3;			//是否成功
+	FailReason	Reason = 4;		    //失败原因
+	DateTime SendTime = 5;      //发送时间
+	string Reserved1 = 101;   //预留1
+	string Reserved2 = 102;   //预留2
+}
+
+//设备侧启动充电申请（0x10）
+message StartChargeReq
+{
+	int32 CanIndex = 1;			//充电终端在集控器下的索引
+	ChargeRequestType Type = 2;	//充电请求类型
+	DateTime SendTime = 3;      //发送时间
+	string Vin = 4;				//车架号，车枪识别充时填写VIN码
+	string Plate = 5;			//车牌号，车牌号充时填写车牌号
+	CardInfo Card = 6;			//充电卡，刷卡充电时填写卡信息
+	string UserCode = 7;		//用户身份
+	string Reserved1 = 101;   //预留1
+	string Reserved2 = 102;   //预留2
+	string Reserved3 = 103;   //预留3
+}
+
+//设备侧启动充电申请.响应（0x90）
+message StartChargeAns
+{
+	int32 CanIndex = 1;	         //充电终端在集控器下的索引
+	ChargeRequestType Type = 2; 	 //充电请求类型
+	BoolEnum Result = 3;	     //是否成功
+	int32 Reason = 4;	     //失败原因
+	string Reserved1 = 101;   //预留1
+	string Reserved2 = 102;   //预留2
+}
+
+//设备侧停止充电申请.请求（0x12）
+message StopChargeReq
+{
+	int32 CanIndex = 1;			//充电终端在集控器下的索引
+	string BillCode = 2;		//订单流水号
+	ChargeRequestType StopType = 3;	//充电停止类型
+	ChargeDischarge ChargeType = 4;	//充放电类型
+	DateTime SendTime = 5;      //发送时间
+	string Vin = 6;             //车架号
+	string Plate = 7;           //车牌号
+	CardInfo Card = 8;          //充电卡
+	string UserCode = 9;        //用户身份
+	string Reserved1 = 101;   //预留1
+	string Reserved2 = 102;   //预留2
+}
+
+//设备侧停止充电申请.响应（0x92）
+message StopChargeAns
+{
+	int32 CanIndex = 1;		//充电终端在集控器下的索引
+	string BillCode = 2;	//订单流水号
+	BoolEnum Result = 3;	//是否成功
+	FailReason Reason = 4;	//失败原因
+	string Reserved1 = 101;   //预留1
+	string Reserved2 = 102;   //预留2
+}
+
+//平台侧暂停充电指令.下发（0x15）
+message SuspendChargeReq
+{
+	int32 CanIndex = 1;	    //充电终端在集控器下的索引
+	string BillCode = 2;	//订单流水号
+    string Reserved1 = 101;   //预留1
+	string Reserved2 = 102;   //预留2
+}
+
+//平台侧暂停充电指令.响应（0x95）
+message SuspendChargeAns
+{
+	int32 CanIndex = 1;		    //充电终端在集控器下的索引
+	string BillCode = 2;		//订单流水号
+	BoolEnum Result = 3;		//是否成功
+	FailReason Reason = 4;	    //失败原因
+	DateTime SendTime = 5;      //发送时间
+	string Reserved1 = 101;   //预留1
+	string Reserved2 = 102;   //预留2
+}
+
+//平台侧恢复充电指令.下发（0x17）
+message ResumeChargeReq
+{
+	int32 CanIndex = 1;	    //充电终端在集控器下的索引
+	string BillCode = 2;	//订单流水号
+	string Reserved1 = 101;   //预留1
+	string Reserved2 = 102;   //预留2
+}
+
+//平台侧恢复充电指令.响应（0x97）
+message ResumeChargeAns
+{
+	int32 CanIndex = 1;		//充电终端在集控器下的索引
+	string Code = 2;		//充放电流水号
+	BoolEnum Result = 3;	//是否成功
+	FailReason Reason = 4;	//失败原因
+	DateTime SendTime = 5;  //发送时间
+	string Reserved1 = 101;   //预留1
+	string Reserved2 = 102;   //预留2
+}
+
+//订单上传.请求（0x16），D -> P
+message BillUploadReq
+{
+	int32 CanIndex = 1;		//充电终端在集控器下的索引
+	BillInfo Bill = 2;		//订单详情
+	DateTime SendTime = 3;  //发送时间
+	string Reserved1 = 101;   //预留1
+	string Reserved2 = 102;   //预留2
+}
+
+//订单上传.响应（0x96）
+message BillUploadAns
+{
+	int32 CanIndex = 1;		//充电终端在集控器下的索引
+	string BillCode = 2;	//订单流水号
+	BoolEnum Confirm = 3;	//确认
+	string CtrlBillCode = 4;	//集控的订单流水号 ---20180424新增，应急充电使用
+	string Reserved1 = 101;   //预留1
+	string Reserved2 = 102;   //预留2
+}
+
+//充电机状态变化通知.请求（0x20）
+message ChargerStateChangeReq
+{
+	repeated ChargerState State = 1;	//充电机状态
+	DateTime SendTime = 2;              //发送时间
+	SendReason Reason =3;       //数据传送原因
+	string Reserved1 = 101;   //预留1
+	string Reserved2 = 102;   //预留2
+}
+
+//充电机状态变化通知.响应（0xA0） 集控到前置不用该类型了，改用 通用响应（0xFE）
+message ChargerStateChangeAns
+{
+	BoolEnum Confirm = 1;	//通知确认
+}
+
+//召唤所有充电机当前工作状态.请求（0x21）
+message ChargerStateReq
+{
+	repeated int32 CanIndex = 1;	//充电终端在集控器下的索引
+	string Reserved1 = 101;   //预留1
+	string Reserved2 = 102;   //预留2
+}
+
+//召唤所有充电机当前工作状态.响应（0xA1）
+message ChargerStateAns
+{
+	BoolEnum Confirm = 1;	//通知确认
+}
+
+//账户详情获取.请求（0x22）
+message AccountDetailReq
+{
+	AccountType Type = 1;	//账户类型
+	int32 CanIndex = 2;     //充电终端在集控器下的索引(允许为零)
+	string AccountID = 3;	//账户ID
+	DateTime SendTime = 4;  //发送时间
+	string Reserved1 = 101;   //预留1
+	string Reserved2 = 102;   //预留2
+	string Reserved3 = 103;   //预留3
+}
+
+//账户详情获取.响应（0xA2）
+message AccountDetailAns
+{
+    int32 CanIndex = 1;     //充电终端在集控器下的索引(允许为零)
+	string AccountID = 2;	//账户ID
+	double Money = 3;		//现金余额
+	double SFee = 4;		//服务费余额
+	double PFee = 5;		//电费余额
+	double BFee = 6;		//通抵余额
+	double Ious = 7;		//白条余额
+	repeated AccountingStrategy Strategy = 8;//计费策略
+	string Reserved1 = 101;   //预留1
+	string Reserved2 = 102;   //预留2
+	string Reserved3 = 103;   //预留3
+}
+
+// 账户信息同步申请.请求（0x24）
+message AccountSyncReq
+{
+	DateTime SyncTime = 1;    //同步时间，具体同步流程参见协议文档4.10
+	SyncAccountType Type = 2; //需要同步的账户类型
+	int32 Size = 3;           //每页的记录条数
+	DateTime SendTime = 4;    //发送时间
+	string Reserved1 = 101;   //预留1
+	string Reserved2 = 102;   //预留2
+}
+
+//账户信息同步申请.响应（0xA4）
+message AccountSyncAns
+{
+	DateTime SyncTime = 1;        //同步时间
+	SyncAccountType Type = 2;     //需要同步的账户类型
+	repeated CardInfo Card = 3;   //充电卡的信息
+	repeated CarInfo Car = 4;     //车信息
+	string Reserved1 = 101;   //预留1
+	string Reserved2 = 102;   //预留2
+}
+
+//充电功率计划曲线指令.下发（0x23）
+message PowerCruveCmdReq
+{
+    int32 CanIndex = 1;                       //充电终端在集控器下的索引
+	string Code = 2;                          //充放电流水号
+	CruveType CType = 3;                      //曲线类型
+	repeated ChargingStrategy Strategy = 4;   //策略
+	string Reserved1 = 101;   //预留1
+	string Reserved2 = 102;   //预留2
+} 
+
+//充电功率计划曲线指令.响应（0xA3）
+message PowerCruveCmdAns
+{
+    BoolEnum Confirm = 1;           //确认
+	FailReason Reason = 2;          //失败原因
+}
+
+//BMS参数通知.请求（0x26）
+message BmsParamNotifyReq
+{
+    int32 CanIndex = 1;         //充电终端索引
+	string Vin = 2;             //车架号
+	SendReason Reason =3;       //数据传送原因
+	DateTime SendTime = 4;      //发送时间
+	BmsShakehands  ShakehandsInfo = 5;     //握手阶段BMS信息
+	BmsConfig ConfigInfo =6;               //参数配置阶段BMS信息
+	BmsChargeFinish ChargeFinishInfo = 7;  //充电结束阶段BMS信息
+	string Reserved1 = 101;   //预留1
+	string Reserved2 = 102;   //预留2
+}
+
+//BMS参数通知.响应（0xA6） 集控到前置不用该类型了，改用 通用响应（0xFE）
+message BmsParamNotifyAns
+{
+    BoolEnum Confirm = 1;//确认
+}
+
+
+//遥测数据召唤.请求（0x31）
+message TelemetryReq
+{
+    repeated int32 CanIndex=1; //充电终端索引，不包含该字段则表示全部终端都召唤
+	string Reserved1 = 101;   //预留1
+	string Reserved2 = 102;   //预留2
+}
+
+//遥测数据召唤.响应（0xB1） 集控到前置不用该类型了，改用 通用响应（0xFE）
+message TelemetryAns
+{
+   BoolEnum Confirm = 1;//确认
+}
+
+//状态数据召唤.请求（0x33）
+message StateReq
+{
+    repeated int32 CanIndex=1;  //充电终端索引，不包含该字段则表示全部终端都召唤
+	string Reserved1 = 101;   //预留1
+	string Reserved2 = 102;   //预留2
+}
+
+//状态数据召唤.响应（0xB3） 集控到前置不用该类型了，改用 通用响应（0xFE）
+message StateAns
+{
+    BoolEnum Confirm = 1;//确认
+}
+
+//BMS数据召唤.请求(0x35)
+message BmsReq
+{
+    repeated int32 CanIndex=1;  //充电终端索引，不包含该字段则表示全部终端都召唤
+	string Reserved1 = 101;   //预留1
+	string Reserved2 = 102;   //预留2
+}
+
+//BMS数据召唤.响应(oxb5)  集控到前置不用该类型了，改用 通用响应（0xFE）
+message BmsAns
+{
+    BoolEnum Confirm = 1;//确认
+}
+
+//遥测数据通知.请求（0x32）
+message TelemetryNotifyReq
+{
+    int32 CanIndex = 1;               //充电终端索引
+	int32 DeviceType = 2;             //预留
+	SendReason Reason = 3;            //数据传送原因
+	DateTime SendTime = 4;            //发送时间
+	repeated MeasureType Type = 5;    //遥测数据项
+	repeated double Value = 6;        //遥测值，和Type一一对应
+	string BillCode  = 7;             //订单流水号
+	string CtrlBillCode  = 8;         //应急充电时集控产生的订单号
+    string Reserved1 = 101;   //预留1
+	string Reserved2 = 102;   //预留2
+}
+
+//遥测数据变化通知.响应（0xB2） 集控到前置不用该类型了，改用 通用响应（0xFE）
+message TelemetryNotifyAns
+{
+    repeated BoolEnum Confirm=1;//确认
+}
+
+//状态数据变化通知.请求(0x34)
+message StateNotifyReq
+{
+    int32 CanIndex = 1;               //充电终端在集控器下的索引
+	int32 DeviceType = 2;             //预留
+	SendReason Reason = 3;            //数据传送原因
+	DateTime SendTime = 4;            //发送时间
+	repeated StateType Type = 5;      //状态数据项
+	repeated int32 Value = 6;         //状态值，和Type一一对应
+	string BillCode  = 7;             //订单流水号
+	string CtrlBillCode  = 8;         //应急充电时集控产生的订单号
+	string Reserved1 = 101;   //预留1
+	string Reserved2 = 102;   //预留2
+}
+
+//状态数据变化通知.响应（0xB4） 集控到前置不用该类型了，改用 通用响应（0xFE）
+message StateNotifyAns
+{
+    repeated BoolEnum Confirm=1;//确认
+}
+
+// BMS数据通知.请求（0x36）
+message BmsNotifyReq
+{
+    int32 CanIndex = 1;               //充电终端在集控器下的索引 
+	string Vin = 2;                   //车架
+	SendReason Reason =3 ;            //数据传送原因
+	DateTime SendTime = 4;            //发送时间
+	BmsCharging ChargingInfo  = 5;    //充电阶段BMS信息
+	string BillCode  = 6;             //订单流水号
+	string CtrlBillCode  = 7;         //应急充电时集控产生的订单号
+	string Reserved1 = 101;   //预留1
+	string Reserved2 = 102;   //预留2
+}
+
+//BMS数据通知.响应（0xB6） 集控到前置不用该类型了，改用 通用响应（0xFE）
+message BmsNotifyAns
+{
+   repeated BoolEnum Confirm=1;//确认
+}
+
+//未被确认所有订单召唤（0x41）
+message BillsNotConfirmedReq
+{
+	int32 CanIndex = 1;               //充电终端在集控器下的索引，不填表示召唤所有充电终端
+	string Reserved1 = 101;   //预留1
+	string Reserved2 = 102;   //预留2
+}
+
+//未被确认所有订单召唤.响应（0xC1）
+message BillsNotConfirmedAns
+{
+	BoolEnum Finished = 1; //确认
+	DateTime SendTime = 2; //发送时间
+}
+
+//   指定编号订单召唤（0x43）
+message SpecificBillReq
+{
+	int32 CanIndex = 1;               //充电终端在集控器下的索引
+	string BillCode = 2;              //订单流水号
+	string Reserved1 = 101;   //预留1
+	string Reserved2 = 102;   //预留2
+}
+
+//  指定编号订单召唤.响应（0xC3）
+message SpecificBillAns
+{
+	BoolEnum Result = 1;     //是否有该订单的信息
+	BoolEnum Confirmed = 2;	 //确认
+	DateTime SendTime = 3;   //发送时间
+	FailReason Reason = 4;   //失败原因
+}
+
+//错误（0xFF）
+message ErrorAns
+{
+    ErrorCode Error = 1;//详见3.4错误代码定义
+}
+
+
+
+//账户信息
+message AccountInfo
+{
+	string AccountID = 1;	    //账户ID
+	double Money = 2;		    //现金余额
+	double SFee = 3;		    //服务费余额
+	double BFee = 4;		    //电费余额
+	double PFee = 5;		    //通抵余额
+	double Ious = 6;		    //白条余额
+}
+
+//计费策略
+message AccountingStrategy
+{
+	DateTime BeginTime = 1;		//充电开始时间，下发当天的0点到24点的数据，日期按照当天的实际值填充，设备侧接收到后只用小时、分钟
+	DateTime EndTime = 2;	    //充电结束时间，下发当天的0点到24点的数据，日期按照当天的实际值填充，设备侧接收到后只用小时、分钟
+	double kWhPrice = 3;	    //充电价格
+	double ServicePrice = 4;    //服务费价格
+}
+
+//账单详情
+message BillInfo
+{
+	string BillCode = 1;						//订单流水号
+	BillStatus Status = 2;						//订单状态
+	string CtrlBillCode = 20;					//集控生成的订单流水号
+	int32 BillType = 3;						    //订单类型(预留,目前只有一种)
+	int32 Reason = 4;						    //充电终止原因
+	DateTime BeginTime = 5;						//开始充电时间
+	DateTime EndTime = 6;						//结束充电时间
+	double BeginMeter = 7;						//充电开始时电表度数
+	double EndMeter = 8;						//充电结束时电表度数
+	int32 BeginSoc = 9;						    //开始充电时的SOC
+	int32 EndSoc = 10;							//结束充电时的SOC
+	StartChargeType	ChargeType = 11;			//充电类型
+	StartChargeWay ChargeWay = 12;				//启动方式
+	string CardNo = 13;							//客户卡卡号
+	string VIN = 14;							//车架号，车枪抢识别充时填写VIN码
+	string Plate = 15;							//车牌号，车牌号充时填写车牌号
+	repeated ChargeFrozen ChargeFrozen = 16;		//充电冻结电量
+	repeated DischargeFrozen DischargeFrozen = 17;	//放电冻结电量
+	int32 QueueNumber = 18;                         //排队号(状态为排队时用)
+	BoolEnum Emergency = 19;                        //是否为应急状态下产生的订单，应急状态下产生的订单填true，否则填false
+	int32 GunNum  = 21;                             //应急充电的订单开启时的枪数
+	string Reserved1 = 101;   //预留1
+	string Reserved2 = 102;   //预留2
+	string Reserved3 = 103;                          //预留3
+}
+
+//汽车信息
+message CarInfo
+{
+	string CarID = 1;     //车的id
+	string CarVIN = 2;    //车的vin
+	int32 PRI = 3;        //优先级
+	string Plate = 4;      //车牌号
+	BoolEnum IsDel = 5;   //是否删除
+}
+
+//充电卡的状态信息
+message CardInfo
+{
+	string CardID = 1;		//充电卡的ID
+	string CardCode = 2;	//充电卡号
+	BoolEnum IsDel = 3;		//是否删除 
+	double Balabce = 4;		//余额
+}
+
+//充电机工作状态
+message ChargerState
+{
+	int32 CanIndex = 1;		        //CAN地址
+	ChargerStateEnum State = 2;	    //充电机工作状态枚举
+	DateTime Timestamp = 3;         //时间戳
+	int32 QueueSequence = 4;        //终端排队序号
+	string BillCode  = 5;             //订单流水号
+	string CtrlBillCode  = 6;         //应急充电时集控产生的订单号
+}
+
+//充电计划曲线
+message ChargingStrategy
+{
+	DateTime BeginTime = 1;		    //充电的开始时间
+	DateTime EndTime = 2;			//结束时间
+	double SuggestValue = 3;      	//充电过程的建议值
+	
+}
+
+//充电冻结电量
+message ChargeFrozen
+{
+	DateTime FrozenTime  = 1;	    //冻结时间点
+	double kWh = 2;			    //冻结时间点的电表读数，单位是度
+}
+
+//放电冻结电量
+message DischargeFrozen
+{
+	DateTime FrozenTime  = 1;	    //冻结时间点
+	double kWh = 2;			    //冻结时间点的电表读数，单位是度
+}
+
+//MasterSlaveInfo-主备枪信息
+message MasterSlaveInfo
+{
+    int32 GunNumber = 1;  //充电枪个数
+	int32 MasterGun = 2;  //主枪
+	int32 SlaveGun1 = 3;  //副枪1 
+	int32 SlaveGun2 = 4;  //副枪2
+	int32 SlaveGun3 = 5;  //副枪3
+	int32 SlaveGun4 = 6;  //副枪4
+	int32 SlaveGun5 = 7;  //副枪5
+	int32 SlaveGun6 = 8;  //副枪6
+}
+
+//BmsShakehands-握手阶段BMS信息
+message BmsShakehands
+{
+    double VolMaxAllowed = 1;    //最高允许充电总电压
+	int32 BatteryType = 2;       //电池类型 //string BatteryType = 2;
+	double CapacityRated = 3;    //整车动力蓄电池系统额定容量（AH） 
+	double VoltageRated = 4;     //整车动力蓄电池额定总电压
+	string BatteryVendor = 5;    //电池生产厂商名称
+	int32 BatterySequence = 6;   //电池组序号 //string BatterySequence = 6;
+	string ProduceDate = 7;      //电池组生产日期
+	int32 ChargeCount = 8;       //电池组充电次数
+    int32 RightIdentifier = 9;   //电池组产权标识 //string RightIdentifier = 9;
+	string BmsVersion = 10;      //BMS软件版本号
+}
+
+// BmsConfig-参数配置阶段BMS信息
+message BmsConfig
+{
+    double VIndAllowedMax = 1;    //单体动力蓄电池最高允许充电电压
+	double IAllowedMax = 2;       //最高允许充电电流
+	double EnergyRated = 3;       //动力蓄电池标称总能量 
+	double VAllowedMax = 4;       //最高允许充电总电压
+	double TAllowedMax = 5;       //最高允许温度
+	double StartSoc = 6;          //整车动力蓄电池荷电状态（SOC）
+	double VCurrent = 7;          //整车动力蓄电池当前电池电压
+	double VCOutputMax = 8;       //充电机最高输出电压
+    double VCOutputMin = 9;       //充电机最低输出电压
+	double ICOutputMax = 10;      //充电机最大输出电流
+	double ICOutputMin = 11;      //充电机最小输出电流
+}
+
+// BmsChargeFinish-充电结束阶段BMS信息
+message BmsChargeFinish
+{
+    double EndSoc = 1;              //中止荷电状态SOC（%） 
+	double VMinIndividal = 2;       //动力蓄电池单体最低电压
+	double VMaxIndividal = 3;       //动力蓄电池单体最高电压 
+	double TemperatureMin = 4;      //动力蓄电池最低温度
+	double TemperatureMax = 5;      //动力蓄电池最高温度
+	int32 ChargeDuration = 6;       //累计充电时长
+	double OutputEnergy = 7;        //输出能量
+	int32 BmsStopReason = 8;        //BMS中止充电原因 //string BmsStopReason = 8;
+    int32 BmsFaultReason = 9;       //BMS中止充电故障原因 //string BmsFaultReason = 9;
+	int32 BmsErrorReason = 10;      //BMS中止充电错误原因 //string BmsErrorReason = 10;
+	int32 ChargerStopReason = 11;   //充电机中止充电原因 //string ChargerStopReason = 11;
+	int32 ChargerFaultReason = 12;  //充电机中止充电故障原因 //string ChargerFaultReason = 12;
+	int32 ChargerErrorReason = 13;  //充电机中止充电错误原因 //string ChargerErrorReason = 13;
+    int32 BmsEFrame = 14;           //BMS错误报文 
+    int32 ChargerEFrame = 15;       //充电机错误报文
+}
+
+// BmsCharging-充电阶段BMS信息
+message BmsCharging
+{
+    double VDemand = 1;              //需求电压 
+	double IDemand = 2;              //需求电流
+	double CurrentSoc = 3;           //当前SOC 
+	double RemainTime = 4;           //估算剩余充电时间(分钟)
+	ChargingMode ChargeMode = 5;     //充电模式(恒压充/恒流充)
+	double VMeasure = 6;             //充电电压测量值
+	double IMeasure = 7;             //充电电流测量值
+	double VIndMax = 8;              //单体电池最高电压
+    int32 VIndMaxCode = 9;           //单体电池最高电压所在编号
+	double VIndMin = 10;             //单体电池最低电压
+	int32 VIndMinCode = 11;          //单体电池最低电压所在编号
+	double TMax = 12;                //电池最高温度
+	int32 TMaxCode = 13;             //电池最高温度检测点编号
+	double TMin = 14;                //电池最低温度
+	int32 TMinCode = 15;             //电池最低温度检测点编号
+	BoolEnum ChargeAllow = 16;       //是否允许充电
+	BoolEnum VIndHigh = 17;          //单体动力蓄电池电压是否过高
+	BoolEnum VIndLow = 18;           //单体动力蓄电池电压是否过低
+    BoolEnum SoHigh =19;             //整车动力蓄电池荷电状态SOC是否过高
+	BoolEnum SocLow = 20;            //整车动力蓄电池荷电状态SOC是否过低
+	BoolEnum IHigh = 21;             //动力蓄电池充电是否过电流
+	BoolEnum THigh = 22;             //动力蓄电池温度是否过高
+	BoolEnum Insulation = 23;        //动力蓄电池绝缘状态是否绝缘
+	BoolEnum OutputConnector = 24;   //动力蓄电池输出连接器连接状态是否连接
+}
+
+//  QueueSequence-终端排队序号
+message QueueSequence
+{
+    int32 CanIndex = 1;              //充电终端在集控器下索引 
+	int32 QSequence = 2;             //终端排队序号
+}
+
+// 平台下发多枪分组信息（0x45）
+message SetGunGroupInfoReq
+{
+	repeated GunGroupType GunGroupInfo = 1;      //多枪充电分组信息
+	string Reserved1 = 101;   //预留1
+	string Reserved2 = 102;   //预留2
+}
+
+// 多枪分组信息
+message GunGroupType
+{
+	int32 Gun1CanIndex = 1 ;                //第1把枪的CanIndex
+	int32 Gun2CanIndex = 2 ;                //第2把枪的CanIndex
+	int32 Gun3CanIndex = 3 ;                //第3把枪的CanIndex
+	int32 Gun4CanIndex = 4 ;                //第4把枪的CanIndex
+	int32 Gun5CanIndex = 5 ;                //第5把枪的CanIndex
+	int32 Gun6CanIndex = 6 ;                //第6把枪的CanIndex
+	int32 Gun7CanIndex = 7 ;                //第7把枪的CanIndex
+	string Reserved1 = 101;   //预留1
+	string Reserved2 = 102;   //预留2
+}
+
+//集控上传主副枪信息通知.请求 0x42
+message GunGroupInfoReq
+{
+	DateTime SendTime = 1;           //发送时间
+	int32 GunNumber =2;              //充电枪个数，0为未知，1为单枪，2为双枪，…，7位七枪充电
+	int32 MasterGun =3; 			 //主枪的CanIndex, 单枪充电方式此项为本身CAN ID
+	int32 SlaveGun1 =4;              //副枪1的CanIndex, 充电枪数小于2时,此时为0
+	int32 SlaveGun2 =5;              //副枪2的CanIndex, 充电枪数小于3时,此时为0
+	int32 SlaveGun3 =6;              //副枪3的CanIndex, 充电枪数小于4时,此时为0
+	int32 SlaveGun4 =7;              //副枪4的CanIndex, 充电枪数小于5时,此时为0
+	int32 SlaveGun5 =8;              //副枪5的CanIndex, 充电枪数小于6时,此时为0
+	int32 SlaveGun6 =9;              //副枪6的CanIndex, 充电枪数小于7时,此时为0
+	string Reserved1 = 101;   //预留1
+	string Reserved2 = 102;   //预留2
+}
+
+//集控上传主副枪信息通知.响应	0xC2	
+message GunGroupInfoAns
+{
+	int32 GunNumber =1;              //充电枪个数，0为未知，1为单枪，2为双枪，…，7位七枪充电
+	int32 MasterGun =2; 			 //主枪的CanIndex, 单枪充电方式此项为本身CAN ID
+	int32 SlaveGun1 =3;              //副枪1的CanIndex, 充电枪数小于2时,此时为0
+	int32 SlaveGun2 =4;              //副枪2的CanIndex, 充电枪数小于3时,此时为0
+	int32 SlaveGun3 =5;              //副枪3的CanIndex, 充电枪数小于4时,此时为0
+	int32 SlaveGun4 =6;              //副枪4的CanIndex, 充电枪数小于5时,此时为0
+	int32 SlaveGun5 =7;              //副枪5的CanIndex, 充电枪数小于6时,此时为0
+	int32 SlaveGun6 =8;              //副枪6的CanIndex, 充电枪数小于7时,此时为0
+	BoolEnum Finished =9;            //确认结果
+	string Reserved1 = 101;   //预留1
+	string Reserved2 = 102;   //预留2
+}
+
+//平台要求集控主动转为本地应急充电指令.下发	0x47	
+message TurnToEmergencyCmdReq
+{
+	DateTime SendTime = 1;    //发送时间
+	int32  SetFlag = 2;       //设置结果 255表示进入应急； 1表示关闭应急
+	string Reserved1 = 101;   //预留1
+	string Reserved2 = 102;   //预留2
+	string Reserved3 = 103;   //预留3
+}
+
+//平台要求集控主动转为本地应急充电指令.响应	0xC7	 
+message TurnToEmergencyCmdAns
+{
+	BoolEnum  Confirm = 1;    //集控返回的确认结果:成功或者失败
+	int32  SetFlag = 2;       //设置结果 255表示进入应急； 1表示关闭应急
+	string Reserved1 = 101;   //预留1
+	string Reserved2 = 102;   //预留2
+	string Reserved3 = 103;   //预留3
+}
+
+//集控账户信息清空命令.下发	0x49
+message ClearAccountCmdReq
+{
+	DateTime SendTime = 1;    //发送时间
+	int32  ClearFlag = 2;     //取值说明：1 表示 清除账户信息
+	string Reserved1 = 101;   //预留1
+	string Reserved2 = 102;   //预留2
+	string Reserved3 = 103;   //预留3
+}
+
+//集控账户信息清空命令.响应	0xC9	
+message ClearAccountCmdAns
+{
+	BoolEnum  Confirm = 1;    //集控返回的确认结果:成功或者失败
+	string Reserved1 = 101;   //预留1
+	string Reserved2 = 102;   //预留2
+	string Reserved3 = 103;   //预留3
+}
+
+//平台下发总召.请求 0x75 CM->FES
+message CallAllDataReq
+{
+	DateTime SendTime = 1;    //发送时间
+	int32 CallFlag = 2;       //召唤请求，1召唤所有终端的遥测数据、状态数据、充电机状态, 2召唤某个终端的数据
+	int32 CanIndex = 3;       //充电终端在集控器下的索引，配合CallFlag=2时使用，平台召唤某个终端的遥测、状态、充电机
+	string Reserved1 = 101;   //预留1
+	string Reserved2 = 102;   //预留2
+	string Reserved3 = 103;   //预留3
+}
+
+
+
+//地磁/超声波状态变化通知.请求（0x44），D-> P
+message ParkStateChangeReq	
+{
+	DateTime SendTime = 1;     //消息发送时间
+	string  DeviceID = 2;      //设备唯一标志，默认使用充电终端的can地址填充
+	ParkingAlarmType ParkingAlarm = 3;   //地磁/超声波故障
+	ParkingStatusEnum ParkingState = 4 ;   //地磁/超声波状态枚举
+    int32 RemainBattery = 5;             //剩余电池电量 e.g. 电量剩余35%，上传35
+    string Reserved1 = 101;              //预留字段1
+    string Reserved2 = 102;              //预留字段2
+}
+
+
+//ParkingAlarmType--地磁故障
+message ParkingAlarmType
+{
+	int32 SevereLevel = 1;      //严重级别 1:设备无法正常工作 2: 设备依然可以正常工作
+	repeated ParkingAlarmCodeEnum ParkingAlarmCode = 2;  //告警码的集合
+}
+
+//地磁/超声波状态召唤.请求（0x71），P->D
+message ParkStateCallReq	
+{
+	DateTime SendTime = 1;      //消息发送时间
+    string DeviceID = 2;        //设备唯一标志，默认使用充电终端的can地址填充
+	string Reserved1 = 101;     //预留字段1
+	string Reserved2 = 102;     //预留字段2
+}
+
+
+//地磁/超声波设备参数获取.请求（0x73），P-> D
+message ParkParaGetReq
+{
+	DateTime SendTime = 1;     //消息发送时间
+	string  DeviceID = 2;      //设备唯一标志，默认使用充电终端的can地址填充
+	string Reserved1 = 101;     //预留字段1
+	string Reserved2 = 102;     //预留字段2
+}
+
+
+//地磁/超声波设备参数获取.响应（0xF3），D-> P
+message ParkParaGetAns
+{
+	BoolEnum Confirm = 1;            //是否成功
+	ParkParamInfo ParkingParam = 2;  //参数信息
+	string Reserved1 = 101;     //预留字段1
+	string Reserved2 = 102;     //预留字段2
+}
+
+//ParkParamInfo –地磁/超声波设备参数信息
+message ParkParamInfo
+{
+	string DeviceID = 1   ;       //设备唯一标识，默认使用充电终端的can地址填充
+	string Temperature = 2;       //工作温度 精确到0.1度
+	string Humidity = 3;          //工作湿度 精确到0.1度
+	string BatteryCapacity = 4;   //电池容量 精确到0.1kwh
+	string Reserved1 = 101;     //预留字段1
+	string Reserved2 = 102;     //预留字段2
+}
+
+
+///////////////////////////////////////////////////////枚举定义
+
+//账户类型
+enum AccountType
+{
+    DefaultAccountType = 0; //缺省值
+	User = 1;	//用户
+	Card = 2;	//充电卡
+	Vin = 3;	//Vin车充识别
+	Plate = 4;	//车牌号
+}
+
+//布尔类型枚举
+enum BoolEnum
+{
+    DefaultBool = 0;//缺省值
+	True = 1;   //是
+	False = 2;  //否
+}
+
+//订单状态
+enum BillStatus 
+{
+    DefaultBill = 0x00;           //缺省值
+	ChargingBillStatus = 0x01;	  //充电中
+	QueueingBillStatus = 0x02;    //排队
+	FinishedBillStatus = 0x03;	  //充电完成
+	StartChargeFailedBillStatus = 0x09;	  //启动充电失败
+	StopChargeFailedBillStatus = 0x0A;	  //停止充电失败
+}
+
+//充电机工作状态枚举
+enum ChargerStateEnum
+{
+    DefaultChargerState = 0x00;      //缺省值
+    Standby = 0x01;                  //待机-空闲
+	Plug = 0x02;                     //待机-插枪
+	Waiting = 0x03;                  //待机-等待中
+	Queueing = 0x04;                 //待机-排队
+	Finished = 0x05;                 //待机-已完成(充电->待机)
+	Fulled = 0x06;                   //待机-已充满(SOC=100%)
+	Charging = 0x11;                 //充电-充电中
+	Changing = 0x12;                 //充电-切换中
+	Pause = 0x13;                    //充电-暂停。废弃，不再使用
+	Restrict = 0x14;                 //充电-限制
+	EVPause = 0x15;                  //车辆暂停
+	CtrlPause = 0x16;                //集控暂停
+	PlatformPause = 0x17;            //平台暂停
+	Starting = 0x21;                 //启动中
+	Offline = 0x22;                  //离线
+	Sublance = 0x23;                 //副枪
+	Discharging = 0x24;              //放电
+	Fault = 0x25;                    //故障
+	Dispatching = 0x26;              //智能调度中
+}
+
+
+//终止原因 废弃 不再使用，终止原因见协议文档附录A
+enum EndReason
+{
+   DefaultEndReason = 0x00 ; // 缺省值
+	BMSEnd1 = 0x01 ; // BMS中止
+	PlatformEnd = 0x02 ; // 平台中止
+	ManuallySetConditionEnd = 0x03 ; // 人工设定条件中止
+	ManuallyClickDCInterfaceEnd = 0x04 ; // 手动点击直流机界面中止
+	ChargerFaultEnd = 0x05 ; // 充电机故障中止
+	ConnectorAbnormalEnd = 0x06 ; // 连接器异常中止
+	ConnectorExtractEnd = 0x07 ; // 连接器拔出中止
+	ForcedSwitchEnd = 0x13 ; // 强制开关中止
+	MainConnectorAbnormalEnd = 0x14 ; // 主接触器异常中止
+	AssistedConnectorAbnormalEnd = 0x15 ; // 辅助接触器异常中止
+	ElectronicLockAbnormalEnd = 0x16 ; // 电子锁异常中止
+	ChargingVoltageAbnormalEnd = 0x21 ; // 充电电压异常中止
+	ChargingCurrentAbnormalEnd = 0x22 ; // 充电电流异常中止
+	ChargingCurrentMismatchingEnd = 0x23 ; // 充电电流不匹配中止
+	ChargingVoltageMismatchingEnd = 0x24 ; // 充电电压不匹配中止
+	ControllerCommunicationFaltEnd = 0x25 ; // 控制器通信故障中止
+	MeterCommunicationFaltEnd = 0x26 ; // 电能表通信故障中止
+	BackstaCommunicationEnd = 0x27 ; // 后台通讯中止
+	SOCFullEnd = 0x28 ; // SOC满中止
+	SystemModelTypeConversionEnd = 0x29 ; // 系统模式类型转换中止
+	PowerFailEnd = 0x31 ; // 断电中止
+	ActiveProtectionBatteryOverTempEnd = 0x32 ; // 主动防护电池过温中止
+	ActiveProtectionBatteryLowTempEnd = 0x33 ; // 主动防护电池低温中止
+	ActiveProtectionBatteryTempOutOfControlEnd = 0x34 ; // 主动防护电池热失控中止
+	ActiveProtectionBatteryOverChargeEnd = 0x35 ; // 主动防护电池过充中止
+	BMSAssistedPowerAbnormalEnd = 0x36 ; // BMS辅助电源异常中止
+	BMSConnectorOpenCircuitFaltEnd = 0x37 ; // BMS接触器开路故障中止
+	ActiveProtectionBMSDataSuperRange = 0x38 ; // 主动防护BMS数据超范围中止
+	PDUOverTempEnd = 0x39 ; // PDU过温中止
+	ActiveProtectionBatteryPortVoltageAbnormalEnd = 0x3A ; // 主动防护电池端口电压异常中止
+	VehicleControllerFaltEnd = 0x41 ; // 车辆控制器故障中止
+	GuidanceCircuit = 0x42 ; // 导引电路电压跳变中止
+	DrawGunEnd = 0x43 ; // 拔枪中止
+	DeviceOverTempEnd = 0x44 ; // 设备过温中止
+	OverCurrentEnd = 0x45 ; // 过流中止
+	OverChargeEnd = 0x46 ; // 过压中止
+	UnderVoltageEnd = 0x47 ; // 欠压中止
+	CPLineLowVoltageFaultEnd = 0x51 ; // CP线低压故障中止
+	CreepageFaultEnd = 0x52 ; // 漏电故障中止
+	ChargingGunSocketOverTempEnd = 0x53 ; // 充电枪座过温中止
+	RelayAbnormalEnd = 0x54 ; // 继电器异常中止
+	CANIDConflictEnd = 0x55 ; // CAN地址冲突中止
+	ActiveProtectionBatteryMonomerOverVoltageEnd = 0x56 ; // 主动防护电池单体过压中止
+	ActiveProtectionBatteryEntiretyOverVoltageEnd = 0x57 ; // 主动防护电池整包过压中止
+	MeterCheckoutErrorEnd = 0x58 ; // 电表校验错误中止
+	BMSCommunicationOvertimeEnd = 0x61 ; // BMS通讯超时中止
+	ElectricityCanontSupplyEnd = 0x62 ; // 电量不能提供中止
+	FanFaultEnd = 0x63 ; // 风扇故障中止
+	EmergencyEnd = 0x64 ; // 急停中止
+	ChargerInsulationAbnormalEnd = 0x65 ; // 充电机绝缘异常中止
+	ChargerHaveNoAvailableModule = 0x66 ; // 充电机无可用模块
+	VehicleBMSAdhesionEnd = 0x67 ; // 车辆BMS粘连中止
+	NotGetVINorPlateEnd = 0x71 ; // 未获取车辆VIN码或车牌号中止
+	FuseFaultEnd = 0x72 ; // 熔断器故障中止
+	ModuleMatchingAbnormalEnd = 0x73 ; // 模块匹配异常中止
+	VehicleBatteryReachTargetSOCEnd = 0x74 ; // 车辆电池达到目标SOC中止
+	VehicleReachTotalVoltageEnd = 0x75 ; // 车辆达到总电压目标值中止
+	VehicleReachMonomerVoltageTargetEnd = 0x76 ; // 车辆达到单体电压目标值中止
+	VehicleBMSInsulationFaultEnd = 0x77 ; // 车辆BMS绝缘故障中止
+	VehicleOutputConnectorOverTempFaultEnd = 0x81 ; // 车辆输出连接器过温故障中止
+	VehicleBMSComponentOrOutputConnectorOverTempEnd = 0x82 ; // 车辆BMS元件、输出连接器过温中止
+	VehicleChargingConnectorFaultEnd = 0x83 ; // 车辆充电连接器故障中止
+	VehicleBatteryGroupOverTempFaultEnd = 0x84 ; // 车辆电池组温度过高故障中止  
+	VehicleHighVoltageRelayFaultEnd = 0x85 ; // 车辆高压继电器故障中止
+	VehicleDetectionPointCC2VoltageDetectFaultEnd = 0x86 ; // 车辆监测点CC2电压检测故障中止
+	VehicleOtherFault = 0x87 ; // 车辆其他故障
+	VehicleOverCurrentEnd = 0x88 ; // 车辆电流过大中止
+	VehicleVoltageAbnormalEnd = 0x89 ; // 车辆电压异常中止
+	BMSEnd2 = 0x8A ; // BMS中止
+	CtrlDisplayEnd = 0x91 ; // 集控显示屏中止
+	CtrlOfflineSwingCardEnd = 0x92 ; // 集控离线刷卡中止
+	CtrlElectricityAbnormalEnd = 0x93 ; // 集控电度数异常中止
+	CtrlAvoidPeakFunctionEnd = 0x94 ; // 集控错峰功能中止
+
+}
+
+//错误代码
+enum ErrorCode 
+{
+    DefaultErrorCode= 0x00;            //缺省值
+	StartSymbolError = 0x10;           //起始符错误
+	HeaderLengthError = 0x20;          //报文头长度错误
+	EncodingTypeError = 0x30;          //消息体编码类型错误
+	ProtocolVersionError = 0x40;       //协议版本号错误
+	MessageTypeError = 0x50;           //消息类型不支持
+	CtrlAddrError =0x60;               //集控器地址格式错误
+	ParseError = 0x70;			       //解析payload出错，类似于消息体无法按照HTTP协议解析
+	ApplicationError = 0x80;           //业务应用处理消息时出错
+	GenericError = 0x90;               //其它错误
+}
+
+//FailReason-失败原因
+enum FailReason
+{
+    DefaultFailReason = 0x00;      //缺省值
+    GetStationError = 0x01;        //获取电站信息异常
+	CannotGetStation = 0x02;       //未获取到电站信息
+	GetCardInfoError = 0x03;       //获取客户卡信息异常
+	CannotGetCardInfo = 0x04;      //未获取到客户卡信息
+	GetAccountInfoError = 0x05;    //获取客户信息异常
+	CannotGetAccountInfo = 0x06;   //未获取到客户信息
+	GetStategyError = 0x07;        //获取计费策略异常
+	CannotGetStategy = 0x08;       //未获取到计费策略
+	GetChargeInfoError = 0x09;	   //获取充电记录异常
+	CtrlOffline = 0x11;            //集控器离网
+	HeaderDecodeError = 0x12;      //报文头解析错误
+	PayloadDecodeError = 0x13;     //报文体解析错误
+}
+
+//遥测数据项枚举
+enum MeasureType
+{
+   DefaultMeasureType = 0x00 ; // 缺省值
+	Va = 0x01 ;  // A相电压
+	Vb = 0x02 ;  // B相电压
+	Vc = 0x03 ;  // C相电压
+	Vdc = 0x04; // 直流侧电压
+	Ia = 0x11 ;  // A相电流
+	Ib = 0x12 ;  // B相电流
+	Ic = 0x13 ;  // C相电流
+	Idc = 0x14 ; // 直流侧电流
+	N = 0x15 ;   // 零线电流
+	P = 0x21 ;   // 总有功功率
+	Q = 0x22 ;   // 总无功功率
+	PF = 0x23 ;  // 总功率因数
+	VU = 0x24 ;  // 电压不平衡率
+	CU = 0x25 ;  // 电流不平衡率
+	Fap = 0x31 ; // 正向有功电能
+	Rap = 0x32 ; // 反向有功电能
+	Frp = 0x33 ; // 正向无功电能
+	Rrp = 0x34 ; // 反向无功电能
+}
+
+
+//集控器离线原因
+enum OfflineReason
+{
+    DefaultOfflineReason = 0x00;       //缺省值
+	ConnectionLost =0x01;              //TCP连接断开
+	PowerOff =0x02;                    //集控器掉电
+	HeartbeatTimeout = 0x03;           //心跳超时
+}
+
+//注册结果
+enum RegistrationStatus
+{
+	DefaultRegistrationStatus = 0x00;//缺省值
+	Accepted = 0x01;	        //成功
+	Rejected = 0x02;			//拒绝
+}
+
+//充电类型
+enum StartChargeType
+{
+    DefaultChargeType = 0x00;   //缺省值，不用
+	ImmediatelyCharge = 0x01;	//立即充电
+	SaveCharge = 0x02;			//经济充电
+	UrgentCharge = 0x03;		//紧急充电
+	AllowedSecond =	0x04;		//按时间充（限定时间）
+	AllowedKwh = 0x05;			//按电量充（限定电量）
+	AllowedRMB = 0x06;			//按金额充（限定金额）
+	AlternateCharge = 0x07;	    //轮充
+	Discharge = 0x08;           //放电
+}
+
+//充电请求类型
+enum ChargeRequestType
+{
+	DefaultChargeRequestType = 0x00;//缺省值
+	VinCharge = 0x01;		//VIN车充识别
+	PlateCharge = 0x02;  	//车牌号
+	CardCharge = 0x03;		//刷卡
+	UserCodeCharge = 0x04;		//用户身份
+}
+
+//停止充电类型
+enum ChargeDischarge
+{
+    DefaultChargeDischarge =0x00; //缺省值
+	StopChargeType = 0x01;	     //立即停止
+	StopDischargeType = 0x02;        //停止放电
+}
+
+
+//启动方式
+enum StartChargeWay
+{
+    DefaultStartChargeWay = 0x00;
+	ClouldStart = 0x01;	        //平台启动
+	CardStart = 0x02;			//设备启动—刷卡
+	VinStart = 0x03;			//设备启动—VIN
+	PlateStart = 0x04;			//设备启动—车牌号
+}
+
+//StateType-状态数据类型
+enum StateType
+{
+    DefaultSignalType = 0x00;
+    Interface = 0x01;       //充电接口标识
+	Connect = 0x02;         //连接确认开关状态
+	Relay = 0x03;           // 输出继电器状态
+	Parking = 0x04;         //停车位状态
+	Charger = 0x05;         //充电机工作状态
+	StateTypeFault = 0x06;  //故障代码
+	BmsFault = 0x07;        //BMS故障信息
+	Reason = 0x08;          //中止充电原因
+	Stategy = 0x09;         //群充策略：ABC策略
+	AuxType = 0x0A;         //辅助电源类型
+	ControlMode = 0x11;  //控制模式：轮充模式\群充模式
+}
+
+//数据传送原因
+enum SendReason
+{
+    DefaultSendReason = 0x00;
+    DataChange = 0x01;      //突发
+	CallAnswer = 0x02;      //召唤应答
+	IntervalSend = 0x03;    //周期上送
+}
+
+//同步账户类型
+enum SyncAccountType
+{
+    DefaultSyncAccountType = 0x00;
+	CustomerCard = 0x01; //用户卡
+	Car = 0x02;          //车辆
+}
+
+//充电类型
+enum ChargingMode 
+{
+    DefaultChargingMode = 0x00;   //缺省值
+	VoltageStable = 0x01;         //恒压充电
+	CurrentStable = 0x02;         //恒流充电
+}
+
+//曲线类型
+enum CruveType  
+{
+    DefaultCruveType  = 0x00;  //缺省值
+	SuggestPower = 0x01;       //建议功率
+	SuggestSoc = 0x02;         //建议SOC
+}
+
+
+//集控硬件类型  
+enum CtrlHardwareType  
+{
+    DefaultCtrlHardwareType = 0x00;     //缺省值
+	SplitType = 0x01;                   //集控器
+	IntigratedType = 0x02;              //单桩集控
+}
+
+//订单类型
+enum BillType
+{
+	DefaultBillType =0; //缺省值
+	ChargingBill = 1;   //充电订单
+}
+
+//时间戳
+message DateTime
+{
+	int64 Time = 0x01;
+}
+
+
+//ParkingStatusEnum-地磁/超声波状态枚举
+enum ParkingStatusEnum
+{
+	Unknow	= 0x00;	           //未知
+	ParkingOccupy	= 0x01;    //有车
+	ParkingIdle	= 0x02;   //无车
+}
+
+//ParkingAlarmCodeEnum-地磁/超声波告警码枚举
+enum ParkingAlarmCodeEnum
+{
+	DefaultParkingAlarmEnum = 0x00;  //缺省值
+	CameraFault = 0x2;               //摄像头损坏
+	SensorFault = 0x03;              //传感器故障
+	BuzzerFault = 0x04;              //蜂鸣器故障
+	LowBattery = 0x05;               //电池电量不足
+	MotorFault = 0x06;               //电机故障
+	Reserved1 = 0x07;                //预留
+}

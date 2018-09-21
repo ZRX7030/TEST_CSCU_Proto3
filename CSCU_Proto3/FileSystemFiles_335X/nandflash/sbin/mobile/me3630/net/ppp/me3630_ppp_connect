@@ -1,0 +1,5 @@
+#!/bin/sh 
+#clear 
+OPTION_FILE="$(dirname $0)/me3630_ppp_options" 
+DIALER_SCRIPT="$(dirname $0)/me3630_ppp_dialer"
+exec pppd file $OPTION_FILE connect "chat -v -f ${DIALER_SCRIPT}"

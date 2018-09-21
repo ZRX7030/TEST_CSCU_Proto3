@@ -1,0 +1,118 @@
+#!/bin/sh
+exit
+
+# Set UART parameters (baudrate)
+comkit -d /dev/ttyO1 -b 115200 -m pc > /dev/null
+
+# 默认就在AT命令模式
+
+# 空指令，用于同步波特率
+AT
+# --
+#    OK
+
+# 查看版本号
+ATI
+# --
+#    Quectel_Ltd
+#    Q
+#    uectel_MC20
+#    Rev
+#    ision: MC20CAR01
+#    A06
+#    OK
+
+
+# 关闭回显
+ATE0
+# --
+#    OK
+
+# 显示详细错误信息
+AT+CMEE=2
+# --
+#    OK
+
+# 显示模块名称
+AT+GMM
+# --
+#    Quectel_MC20
+#    OK
+
+# ------------------------------------------------------------------------------
+# 模块开机后应该执行下面初始化流程——
+
+# 测试串口通讯是否正常
+AT
+# -- OK
+
+# 查询是否检测到SIM卡
+AT+CPIN?
+# --
+#    +CPIN: READY
+#    OK
+
+# 查询信号质量
+# 该命令用来检测接收信号强度<rssi>和信道误码率<ber>，无论有没有插入SIM卡
+# 回应格式为+CSQ: <rssi>,<ber>。
+# 其中<rssi>为0~31表示有信号（数字越大则信号越好），99表示无信号
+# 其中<ber>为0~7表示误码率的百分比，99表示未知
+AT+CSQ
+# --
+#    +CSQ: 18,0
+#    OK
+
+# 查询模块是否注册网络
+AT+CREG?
+# --
+#    +CREG: 0,1
+#    或+CREG: 0,5，表示正在漫游
+#    OK
+
+# 查询模块是否附着到GPRS网络
+AT+CGATT?
+# --
+#    +CGATT: 1
+#    OK
+
+# 以上全部正常在进行其它功能操作。
+# ------------------------------------------------------------------------------
+# GPS相关命令
+
+# 开启GPS电源
+AT+QGNSSC=1
+# -- OK
+
+# Inquire GNSS NMEA sentence
+AT+QGNSSRD?
+# --
+#    +QGNSSRD: $GNRMC,035415.710,V,,,,,0.00,0.00,200417,,,N*53
+#    $GNVTG,0.00,T,,M,0.00,N,0.00,K,N*2C
+#    $GNGGA,035415.710,,,,,0,0,,,M,,M,,*56
+#    $GPGSA,A,1,,,,,,,,,,,,,,,*1E
+#    $BDGSA,A,1,,,,,,,,,,,,,,,*0F
+#    $GPGSV,1,1,00*79
+#    $BDGSV,1,1,00*68
+#    $GNGLL,,,,,035415.710,V,N*64
+#    OK
+
+# Inquire RMC information 
+AT+QGNSSRD="NMEA/RMC"
+# --
+#    +QGNSSRD: $GNRMC,035900.710,V,,,,,0.00,0.00,200417,,,N*5A
+#    OK
+
+# Inquire GSA information 
+AT+QGNSSRD="NMEA/GSA"
+# --
+#    +QGNSSRD: $GPGSA,A,1,,,,,,,,,,,,,,,*1E
+#    $BDGSA,A,1,,,,,,,,,,,,,,,*0F
+#    OK
+
+# Inquire GNSS version information
+AT+QGNSSCMD=0,"$PMTK605*31"
+# --
+#    OK
+#    +QGNSSCMD: $PMTK705,AXN_3.82_3333_16081700,0001,MC20-GNSS,1.0*20
+
+# ------------------------------------------------------------------------------

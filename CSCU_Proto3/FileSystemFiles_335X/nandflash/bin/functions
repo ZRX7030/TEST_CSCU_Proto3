@@ -1,0 +1,4 @@
+second_to_time()
+{
+	echo `date +%Y-%m-%d\ %H:%M:%S  -d @"$1"`
+}

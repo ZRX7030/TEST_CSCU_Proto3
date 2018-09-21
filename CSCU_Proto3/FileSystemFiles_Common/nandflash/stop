@@ -1,0 +1,6 @@
+
+#!/bin/sh
+killall cscu_a1.init
+killall CSCU_A1
+killall syslogd
+killall crond

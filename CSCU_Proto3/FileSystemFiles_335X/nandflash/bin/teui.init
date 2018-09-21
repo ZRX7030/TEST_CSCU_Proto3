@@ -1,0 +1,20 @@
+#!/bin/sh
+
+exec_dir=/mnt/nandflash
+exec_host=127.0.0.1
+
+
+while true
+do
+
+	#start run count record
+	cur_time=$(date "+%Y-%m-%d %H:%M:%S")
+	let "count+=1"
+	output="["${count}"] "${cur_time}
+	echo $output >> /mnt/nandflash/restart.tmp
+
+	#run teui program
+	/mnt/nandflash/bin/TEUI -qws -host $exec_host
+	sleep 1
+done
+

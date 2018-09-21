@@ -1,0 +1,21 @@
+create table if not exists bms_dynamic_CHANGE_table
+(
+	id						integer primary key autoincrement,
+	record_time				datetime,
+	guid_number				varchar(100),
+	need_voltage			varchar(10),
+	need_current			varchar(10),
+	charge_mode				varchar(10),
+	voltage_measure			varchar(10),
+	current_measure			varchar(10),
+	max_single_voltage		varchar(10),
+	max_single_voltage_num	integer,
+	current_soc				integer,
+	charge_left_time		integer,
+	max_tempeture			varchar(10),
+	max_tempeture_num		integer,
+	min_tempeture			varchar(10),
+	min_tempeture_num		integer,
+	bms_charge_enable		integer
+);
+

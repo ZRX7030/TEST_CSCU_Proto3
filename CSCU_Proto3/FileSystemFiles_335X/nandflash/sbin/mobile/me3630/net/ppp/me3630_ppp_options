@@ -1,0 +1,21 @@
+/dev/me3630/tty_MODEM
+115200 
+nocrtscts 
+modem 
+persist 
+lock 
+noauth 
+noipdefault 
+debug 
+nodetach 
+user Anyname 
+password Anypassword 
+ipcp-accept-local 
+ipcp-accept-remote 
+#replacedefaultroute 
+defaultroute 
+usepeerdns 
+noccp 
+nobsdcomp 
+novj 
+dump

@@ -1,0 +1,62 @@
+#!/bin/sh
+exit
+
+# 进入AT命令模式
++++
+# 接收到"a"之后，在3s之内，发送：
+a
+
+# 查询软件版本
+AT+VER
+
+# 开启以太网接口：
+AT+FEPHY=on
+AT+RELD
+
+# 设置以太网口工作在LAN口方式
+AT+FVEW=disable
+AT+RELD
+
+# STA模式下的命令 --------------------------------------------------------------
+
+# 设置为STA模式
+AT+WMODE=STA
+
+# 搜索周围AP
+AT+WSCAN
+sleep 6
+# 回应格式：
+# +ok=
+# RSSI,SSID,BSSID,Channel,Encryption,Authentication
+# 5%,GLPI-Park,a6:14:4b:6d:c1:5b,3,AES,WPA2PSK,
+# 0%,teld_visit_net,ec:6c:9f:43:62:64,1,TKIP,WPA2PSK,
+# 0%,TGOOD_test_server,d8:b0:4c:b4:7e:ec,5,AES,WPA2PSK,
+
+# 设置待连接AP的SSID和密码
+AT+WSSSID=TGOOD_test_server
+AT+WSKEY=WPA2PSK,AES,TGOOD300001
+AT+Z
+
+# @TODO: 重新进入AT命令模式...
+
+# 查询无线link状态
+# AT+WSLK
+
+# AP模式下的命令 ---------------------------------------------------------------
+
+# 设置为AP模式
+AT+WMODE=AP
+
+# 设置本AP的SSID和密码（掉电保存）
+AT+WAP=11BGN,TGOOD_test_server,Auto
+AT+WAKEY=WPA2PSK,AES,TGOOD300001
+AT+Z
+
+# LAN参数，默认可不用设置：
+# AT+LANN=10.10.100.254,255.255.255.0
+
+# 开启DHCP
+# AT+DHCPDEN=on
+
+# ------------------------------------------------------------------------------
+
